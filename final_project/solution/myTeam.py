@@ -46,12 +46,9 @@ class ReflexCaptureAgent(CaptureAgent):
     # You can profile your evaluation time by uncommenting these lines
     start = time.time()
     values = [self.evaluate(gameState, a) for a in actions]
-    print 'eval time for agent %d: %.4f' % (self.index, time.time() - start)
- nasdfjsdahfkjasdhfkjasldhflkjs
     maxValue = max(values)
     bestActions = [a for a, v in zip(actions, values) if v == maxValue]
 
-    prio sdjfsk
     return random.choice(bestActions)
 
   def getSuccessor(self, gameState, action):
@@ -127,9 +124,7 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
       myState = successor.getAgentState(teamMate)
       myPos = myState.getPosition()
       teamPositions.append((teamMate,myPos))
-    print('team postions are {}'.format(teamPositions))
     distanceBetweenMates = self.getMazeDistance((teamPositions[0])[1], (teamPositions[1])[1])
-    print distanceBetweenMates
     return distanceBetweenMates
 
 
@@ -144,16 +139,8 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
     features['onDefense'] = 1
     if myState.isPacman: features['onDefense'] = 0
 
-    print ('pacman is on defense ? {}'.format(features['onDefense']))
-    print(myState)
-    print(self.red)
-    print('team is {}'.format((self.getTeam(gameState))))
-    print('index is {}'.format(self.index))
-    print('my pos is {}'.format(myPos))
     features['teamDistance']=self.teamDistance(gameState,action)
 
-    print'/////////////'
-    # print(distanceCalculator.)
     # Computes distance to invaders we can see
     enemies = [successor.getAgentState(i) for i in self.getOpponents(successor)]
     invaders = [a for a in enemies if a.isPacman and a.getPosition() != None]
@@ -168,15 +155,12 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
     
     distancer = distanceCalculator.Distancer(gameState.data.layout)
     for x,y in redFood:
-      print 'red food are {} {} '.format(x,y)
       distance =     distancer.getDistance(myPos,(x,y))
-      print 'distance from redFood is {}'.format(distance)
 
       if distance > maxDistance:
         maxDistance = distance
         maxFood = (x,y)
 
-    print('max food is {}'.format(maxFood))
     features['farthestRedFood'] = maxDistance
     if action == Directions.STOP: features['stop'] = 1
     rev = Directions.REVERSE[gameState.getAgentState(self.index).configuration.direction]
@@ -188,20 +172,15 @@ class DefensiveReflexAgent(ReflexCaptureAgent):
     distanceWeight = 0
     successor = self.getSuccessor(gameState, action)
     myPos = successor.getAgentState(self.index).getPosition()
-f fsjkldfjsdlk
+    
     enemies = [successor.getAgentState(i) for i in self.getOpponents(successor)]
     invaders = [a for a in enemies if a.isPacman and a.getPosition() != None]
     dists = [self.getMazeDistance(myPos, a.getPosition()) for a in invaders]
-    if dists:
-      print ('closest invader is {}'.format(min(dists)))
-      # if min(dists) < 10 :
-        # distanceWeight = -5
+
     invaderDistanceValue = -1000
     scaredTimer = gameState.getAgentState(self.index).scaredTimer
     if scaredTimer > 0:
       invaderDistanceValue= 1000
-
-      # print('timer {}'.format(m.scaredTimer))
 
     return {'numInvaders': -1000, 'onDefense': 100, 'invaderDistance': -10, 'stop': -100, 'reverse': -2, 'teamDistance':distanceWeight, 'farthestRedFood':0}
 
